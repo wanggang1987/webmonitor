@@ -5,13 +5,18 @@
  */
 package org.wang.webmonitor;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
 /**
  *
  * @author wanggang
  */
-public enum OsType {
-    Android,
-    iOS,
-    Mac,
-    Windows
+@Controller
+public class WebView {
+
+    @GetMapping("home")
+    public String home() {
+        return "home";
+    }
 }

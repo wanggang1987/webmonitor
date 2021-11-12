@@ -15,11 +15,11 @@ import lombok.Data;
 @Data
 public class Trace {
 
-    private String userId;
+    private String user;
     private Event event;
-    private String moduleName;
+    private String module;
     private String url;
-    private OsType os;
+    private String platform;
     private String version;
     private Timestamp timestamp;
 }
