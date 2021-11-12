@@ -139,8 +139,6 @@ function getPerformance() {
 // 信息监控
 function monitorInit() {
     const monitor = {
-        // 数据上传地址
-        url: 'http://localhost:8080/',
         // 性能信息
         performance: getPerformance(),
         // 错误信息
@@ -152,4 +150,48 @@ function monitorInit() {
     return monitor
 }
 
+//数据上传地址
+const url = 'http://localhost:8080/api/event';
+//监控信息
 const monitor = monitorInit()
+
+//beacon发送
+function sendBeacon(url, params) {
+    const data = new URLSearchParams(params)
+    const headers = {
+        type: 'application/x-www-form-urlencoded'
+    }
+    const blob = new Blob([data], headers)
+    navigator.sendBeacon(url, blob)
+}
+
+//像素埋点
+function sendPxPoint(url, params) {
+    const img = new Image()
+
+    img.style.display = 'none'
+
+    const removeImage = function () {
+        img.parentNode.removeChild(img)
+    }
+
+    img.onload = removeImage
+    img.onerror = removeImage
+
+    const data = new URLSearchParams(params)
+    img.src = `${url}?${data}`
+
+    document.body.appendChild(img)
+}
+
+function sendLog(params) {
+    if (navigator.sendBeacon) {
+        sendBeacon(url, params)
+    } else {
+        sendPxPoint(url, params)
+    }
+}
+
+function sendMonitor(){
+    sendLog(monitor)
+}
