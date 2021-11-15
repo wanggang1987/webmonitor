@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class WebmonitorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WebmonitorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WebmonitorApplication.class, args);
+    }
 
 }

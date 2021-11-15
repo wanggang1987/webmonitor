@@ -6,7 +6,7 @@
 
 
 // 各主流浏览器
-function getBrowser() {
+function getBrowserInfo() {
     var u = navigator.userAgent;
 
     var bws = [{
@@ -75,7 +75,7 @@ function getBrowser() {
 }
 
 // 系统区分
-function getOS() {
+function getOsInfo() {
     var u = navigator.userAgent;
     if (!!u.match(/compatible/i) || u.match(/Windows/i)) {
         return 'windows';
@@ -91,20 +91,21 @@ function getOS() {
 }
 
 // 抓取用户信息
-function getUser() {
+function getMonitorUserInfo() {
     const user = {
+        // 用户信息
+        uuid: 'test',
+
         // 屏幕宽度
         screen: screen.width,
         // 屏幕高度
         height: screen.height,
 
-        // 浏览器平台
-        browser: getBrowser(),
-        //浏览器版本
-        os: getOS(),
+        // 浏览器型号
+        browser: getBrowserInfo(),
+        // 浏览器版本
+        os: getOsInfo(),
 
-        // 浏览器的用户代理信息
-        userAgent: navigator.userAgent,
         // 浏览器用户界面的语言
         language: navigator.language,
     }
@@ -113,7 +114,7 @@ function getUser() {
 }
 
 // 抓取性能信息
-function getPerformance() {
+function getPerformanceInfo() {
     if (!window.performance)
         return;
     const timing = window.performance.timing;
@@ -130,55 +131,49 @@ function getPerformance() {
         unload: timing.unloadEventEnd - timing.unloadEventStart,
         // 请求耗时
         request: timing.responseEnd - timing.requestStart,
-        // 获取性能信息时当前时间
-        time: new Date().getTime(),
     }
 
     return performance;
-
 }
 
 // 信息对象
 function monitorInit() {
+    const currentTime = new Date().getTime();
     const monitor = {
         // 性能信息
-        performance: getPerformance(),
-        // 错误信息
-        errors: [],
+        performance: getPerformanceInfo(),
         // 用户信息
-        user: getUser(),
+        user: getMonitorUserInfo(),
+        // 用户时间戳
+        time: currentTime,
     }
 
     return monitor;
 }
 
-// 监控信息
-const monitor = monitorInit()
-
-// 在浏览器空闲时间获取性能及资源信息 https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback
+// 在浏览器空闲时间,获取监控信息和发送请求
 window.onload = () => {
+    const monitor = monitorInit();
+
     if (window.requestIdleCallback) {
         window.requestIdleCallback(() => {
-            sendMonitor()
+            sendInfo2Server('/info', monitor);
         })
     } else {
         setTimeout(() => {
-            sendMonitor()
+            sendInfo2Server('/info', monitor);
         }, 0)
     }
 }
 
-// 数据上传地址
-const url = 'http://localhost:8080/api/event';
-
 //beacon发送
-function sendBeacon(url, params) {
+function sendBeaconRequest(url, params) {
     const blob = new Blob([JSON.stringify(params)]);
     navigator.sendBeacon(url, blob);
 }
 
-// 像素埋点
-function sendPxPoint(url, params) {
+// 像素发送
+function sendPxPointRequest(url, params) {
     const img = new Image();
 
     img.style.display = 'none';
@@ -196,18 +191,76 @@ function sendPxPoint(url, params) {
     document.body.appendChild(img);
 }
 
-// 发送日志
-function sendLog(params) {
+// 发送Trace
+function sendInfo2Server(url, params) {
+    // 数据上传地址
+    const fullUrl = monitorDomain + url;
     if (navigator.sendBeacon) {
-        sendBeacon(url, params);
+        sendBeaconRequest(fullUrl, params);
     } else {
-        sendPxPoint(url, params);
+        sendPxPointRequest(fullUrl, params);
     }
 }
 
 // 发送监控信息
-function sendMonitor() {
+function sendWebMonitor() {
     console.log('send web monitor info');
     console.log(monitor);
-    sendLog(monitor);
 }
+
+// 监听js错误
+window.onerror = function (msg, url, row, col, error) {
+    const errorInfo = {
+        type: 'javascript', // 错误类型
+        row: row, // 发生错误时的代码行数
+        col: col, // 发生错误时的代码列数
+        msg: error && error.stack ? error.stack : msg, // 错误信息
+        url: url, // 错误文件
+        time: new Date().getTime(), // 错误发生的时间
+    }
+
+    sendInfo2Server('/error', errorInfo);
+}
+
+// 发送进入页面动作
+const enterPage = {
+    type: "ENTER_PAGE",
+    url: window.location.href,
+    module: 'page',
+    time: new Date().getTime(),
+}
+sendInfo2Server('/event', enterPage);
+
+// 发送切屏动作
+const changePageHandle = () => {
+    if (document.visibilityState === 'hidden') {
+        const changePage = {
+            type: "CHANGE_PAGE",
+            url: window.location.href,
+            module: 'page',
+            time: new Date().getTime(),
+        }
+        sendInfo2Server('/event', changePage);
+    } else {
+        const changePage = {
+            type: "FOCUSIN_PAGE",
+            url: window.location.href,
+            module: 'page',
+            time: new Date().getTime(),
+        }
+        sendInfo2Server('/event', changePage);
+    }
+}
+document.addEventListener('visibilitychange', changePageHandle);
+
+// 发送离开页面动作
+const unloadHandle = () => {
+    const leavePage = {
+        type: "LEAVE_PAGE",
+        url: window.location.href,
+        module: 'page',
+        time: new Date().getTime(),
+    }
+    sendInfo2Server('/event', leavePage);
+}
+window.addEventListener('beforeunload', unloadHandle);

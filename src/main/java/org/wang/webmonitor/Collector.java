@@ -18,16 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("api")
+@RequestMapping("monitor")
 public class Collector {
 
+    @PostMapping("info")
+    public void beanconInfo(@RequestBody String trace) {
+        log.info("beanconInfo:" + trace);
+    }
+
+    @GetMapping("info")
+    public void pxpointInfo(@RequestBody String trace) {
+        log.info("pxpointInfo:" + trace);
+    }
+
+    @PostMapping("error")
+    public void beanconError(@RequestBody String trace) {
+        log.info("beanconError:" + trace);
+    }
+
+    @GetMapping("error")
+    public void pxpointError(@RequestBody String trace) {
+        log.info("pxpointError:" + trace);
+    }
+    
     @PostMapping("event")
-    public void beancon(@RequestBody String trace) {
-        log.info("beancon:" + trace);
+    public void beanconEvent(@RequestBody String trace) {
+        log.info("beanconEvent:" + trace);
     }
 
     @GetMapping("event")
-    public void pxpoint(@RequestBody String trace) {
-        log.info("pxpoint:" + trace);
+    public void pxpointEvent(@RequestBody String trace) {
+        log.info("pxpointEvent:" + trace);
     }
 }
