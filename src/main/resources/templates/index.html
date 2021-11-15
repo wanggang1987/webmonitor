@@ -12,7 +12,7 @@ and open the template in the editor.
         <script>
             const monitorDomain = 'http://localhost:8080/monitor/';
         </script>
-        <script type="text/javascript" src="webmonitorSDK.js"></script>
+        <script type="text/javascript" src="http://localhost:8080/webmonitorSDK.js"></script>
 
     </head>
     <body>
@@ -22,8 +22,16 @@ and open the template in the editor.
         <script>
             document.querySelector('.btn1').onclick = () => {
                 setTimeout(() => {
-                    console.log(monitor)
-                    sendMonitor()
+                    console.log(monitor);
+                }, 0)
+            }
+        </script>
+        
+        <button class="btn2">业务模块下钻</button>
+        <script>
+            document.querySelector('.btn2').onclick = () => {
+                setTimeout(() => {
+                    sendUserEvent('DRILL', '关账详情');
                 }, 0)
             }
         </script>

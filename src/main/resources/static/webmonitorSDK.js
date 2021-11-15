@@ -202,12 +202,6 @@ function sendInfo2Server(url, params) {
     }
 }
 
-// 发送监控信息
-function sendWebMonitor() {
-    console.log('send web monitor info');
-    console.log(monitor);
-}
-
 // 监听js错误
 window.onerror = function (msg, url, row, col, error) {
     const errorInfo = {
@@ -264,3 +258,14 @@ const unloadHandle = () => {
     sendInfo2Server('/event', leavePage);
 }
 window.addEventListener('beforeunload', unloadHandle);
+
+// 发送业务动作
+function sendUserEvent(userType, userModule) {
+    const userEvent = {
+        type: userType,
+        url: window.location.href,
+        module: userModule,
+        time: new Date().getTime(),
+    }
+    sendInfo2Server('/event', userEvent);
+}

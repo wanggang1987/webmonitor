@@ -5,12 +5,18 @@
  */
 package org.wang.webmonitor;
 
+import java.sql.Timestamp;
+import lombok.Data;
+
 /**
  *
  * @author wanggang
  */
-public enum Event {
-    CLICK,
-    QUIT,
-    DOUBLE_CLICK,
+@Data
+public class Event {
+
+    private EventType event;
+    private String url;
+    private String module;
+    private Timestamp time;
 }

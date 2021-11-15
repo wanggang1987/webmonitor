@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebView {
 
-    @GetMapping("home")
+    @GetMapping("index")
     public String home() {
-        return "home";
+        return "index";
     }
 }

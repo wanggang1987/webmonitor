@@ -1,0 +1,32 @@
+server:
+    port: 8080
+spring:
+    application:
+        name: webmonitor
+    datasource:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:testdb?useUnicode=true&characterEncoding=utf-8&createDatabaseIfNotExist=true&serverTimezone=GMT%2B8;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password: 
+    h2:
+        console:
+            enabled: true
+            path: /h2-console
+            settings:
+                trace: false
+                web-allow-others: false
+    liquibase:
+        change-log: classpath:db/master.xml
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+        serialization:
+            indent_output: true
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql

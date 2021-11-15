@@ -5,16 +5,18 @@
  */
 package org.wang.webmonitor;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.stereotype.Service;
-
 /**
  *
  * @author wanggang
  */
-@Service
-public class Storge {
-
-    private Map< String, Event> map = new HashMap<>();
+public enum EventType {
+    ENTER_PAGE,
+    CHANGE_PAGE,
+    FOCUSIN_PAGE,
+    LEAVE_PAGE,
+    
+    CLICK,
+    DOUBLE_CLICK,
+    DRILL,
+    QUIR,
 }
