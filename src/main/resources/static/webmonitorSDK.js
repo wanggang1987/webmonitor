@@ -90,6 +90,7 @@ function getOS() {
     }
 }
 
+// 抓取用户信息
 function getUser() {
     const user = {
         // 屏幕宽度
@@ -111,10 +112,11 @@ function getUser() {
     return user;
 }
 
+// 抓取性能信息
 function getPerformance() {
     if (!window.performance)
-        return
-    const timing = window.performance.timing
+        return;
+    const timing = window.performance.timing;
     const performance = {
         // 重定向耗时
         redirect: timing.redirectEnd - timing.redirectStart,
@@ -136,7 +138,7 @@ function getPerformance() {
 
 }
 
-// 信息监控
+// 信息对象
 function monitorInit() {
     const monitor = {
         // 性能信息
@@ -147,51 +149,65 @@ function monitorInit() {
         user: getUser(),
     }
 
-    return monitor
+    return monitor;
 }
 
-//数据上传地址
-const url = 'http://localhost:8080/api/event';
-//监控信息
+// 监控信息
 const monitor = monitorInit()
+
+// 在浏览器空闲时间获取性能及资源信息 https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback
+window.onload = () => {
+    if (window.requestIdleCallback) {
+        window.requestIdleCallback(() => {
+            sendMonitor()
+        })
+    } else {
+        setTimeout(() => {
+            sendMonitor()
+        }, 0)
+    }
+}
+
+// 数据上传地址
+const url = 'http://localhost:8080/api/event';
 
 //beacon发送
 function sendBeacon(url, params) {
-    const data = new URLSearchParams(params)
-    const headers = {
-        type: 'application/x-www-form-urlencoded'
-    }
-    const blob = new Blob([data], headers)
-    navigator.sendBeacon(url, blob)
+    const blob = new Blob([JSON.stringify(params)]);
+    navigator.sendBeacon(url, blob);
 }
 
-//像素埋点
+// 像素埋点
 function sendPxPoint(url, params) {
-    const img = new Image()
+    const img = new Image();
 
-    img.style.display = 'none'
+    img.style.display = 'none';
 
     const removeImage = function () {
-        img.parentNode.removeChild(img)
+        img.parentNode.removeChild(img);
     }
 
-    img.onload = removeImage
-    img.onerror = removeImage
+    img.onload = removeImage;
+    img.onerror = removeImage;
 
-    const data = new URLSearchParams(params)
-    img.src = `${url}?${data}`
+    const data = new URLSearchParams(params);
+    img.src = `${url}?${data}`;
 
-    document.body.appendChild(img)
+    document.body.appendChild(img);
 }
 
+// 发送日志
 function sendLog(params) {
     if (navigator.sendBeacon) {
-        sendBeacon(url, params)
+        sendBeacon(url, params);
     } else {
-        sendPxPoint(url, params)
+        sendPxPoint(url, params);
     }
 }
 
-function sendMonitor(){
-    sendLog(monitor)
+// 发送监控信息
+function sendMonitor() {
+    console.log('send web monitor info');
+    console.log(monitor);
+    sendLog(monitor);
 }

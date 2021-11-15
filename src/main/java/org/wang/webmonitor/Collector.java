@@ -23,11 +23,11 @@ public class Collector {
 
     @PostMapping("event")
     public void beancon(@RequestBody String trace) {
-        log.info(trace);
+        log.info("beancon:" + trace);
     }
 
     @GetMapping("event")
     public void pxpoint(@RequestBody String trace) {
-        log.info(trace);
+        log.info("pxpoint:" + trace);
     }
 }
