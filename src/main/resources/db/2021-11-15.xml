@@ -37,6 +37,7 @@
             <column name="browser" type="varchar(16)"/>
             <column name="os" type="varchar(16)"/>
             <column name="language" type="varchar(16)"/>
+            <column name="duration" type="bigint"/>
         </createTable>
     </changeSet>
     

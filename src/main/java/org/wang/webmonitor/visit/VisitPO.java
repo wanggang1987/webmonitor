@@ -34,4 +34,5 @@ public class VisitPO extends BasicPO {
     private String browser;
     private String os;
     private String language;
+    private Long duration;
 }
