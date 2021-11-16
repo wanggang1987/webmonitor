@@ -3,20 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.wang.webmonitor;
+package org.wang.webmonitor.visit;
 
-import java.sql.Timestamp;
-import lombok.Data;
+import org.apache.ibatis.annotations.Mapper;
+import org.wang.webmonitor.TKMapper;
 
 /**
  *
  * @author wanggang
  */
-@Data
-public class Event {
+@Mapper
+public interface VisitMapper extends TKMapper<VisitPO> {
 
-    private EventType event;
-    private String url;
-    private String module;
-    private Timestamp time;
 }

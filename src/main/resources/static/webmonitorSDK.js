@@ -4,6 +4,14 @@
  * and open the template in the editor.
  */
 
+// 全局id算法
+function monitorGuid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+const monitorId = monitorGuid();
 
 // 各主流浏览器
 function getBrowserInfo() {
@@ -94,10 +102,10 @@ function getOsInfo() {
 function getMonitorUserInfo() {
     const user = {
         // 用户信息
-        uuid: 'test',
+        userName: 'test',
 
         // 屏幕宽度
-        screen: screen.width,
+        width: screen.width,
         // 屏幕高度
         height: screen.height,
 
@@ -140,12 +148,14 @@ function getPerformanceInfo() {
 function monitorInit() {
     const currentTime = new Date().getTime();
     const monitor = {
+        // 全局ID
+        guid: monitorId,
+        // 用户时间戳
+        time: currentTime,
         // 性能信息
         performance: getPerformanceInfo(),
         // 用户信息
         user: getMonitorUserInfo(),
-        // 用户时间戳
-        time: currentTime,
     }
 
     return monitor;
@@ -205,6 +215,8 @@ function sendInfo2Server(url, params) {
 // 监听js错误
 window.onerror = function (msg, url, row, col, error) {
     const errorInfo = {
+        // 全局ID
+        guid: monitorId,
         type: 'javascript', // 错误类型
         row: row, // 发生错误时的代码行数
         col: col, // 发生错误时的代码列数
@@ -218,6 +230,8 @@ window.onerror = function (msg, url, row, col, error) {
 
 // 发送进入页面动作
 const enterPage = {
+    // 全局ID
+    guid: monitorId,
     type: "ENTER_PAGE",
     url: window.location.href,
     module: 'page',
@@ -229,6 +243,8 @@ sendInfo2Server('/event', enterPage);
 const changePageHandle = () => {
     if (document.visibilityState === 'hidden') {
         const changePage = {
+            // 全局ID
+            guid: monitorId,
             type: "CHANGE_PAGE",
             url: window.location.href,
             module: 'page',
@@ -237,6 +253,8 @@ const changePageHandle = () => {
         sendInfo2Server('/event', changePage);
     } else {
         const changePage = {
+            // 全局ID
+            guid: monitorId,
             type: "FOCUSIN_PAGE",
             url: window.location.href,
             module: 'page',
@@ -250,6 +268,8 @@ document.addEventListener('visibilitychange', changePageHandle);
 // 发送离开页面动作
 const unloadHandle = () => {
     const leavePage = {
+        // 全局ID
+        guid: monitorId,
         type: "LEAVE_PAGE",
         url: window.location.href,
         module: 'page',
@@ -262,10 +282,29 @@ window.addEventListener('beforeunload', unloadHandle);
 // 发送业务动作
 function sendUserEvent(userType, userModule) {
     const userEvent = {
+        // 全局ID
+        guid: monitorId,
         type: userType,
         url: window.location.href,
         module: userModule,
         time: new Date().getTime(),
     }
     sendInfo2Server('/event', userEvent);
+}
+
+// 发送点击动作
+function sendUserEventClick(userModule) {
+    sendUserEvent('CLICK', userModule);
+}
+// 发送下钻动作
+function sendUserEventDrill(userModule) {
+    sendUserEvent('DRILL', userModule);
+}
+// 发送双击动作
+function sendUserEventDoubleClick(userModule) {
+    sendUserEvent('DOUBLE_CLICK', userModule);
+}
+// 发送退出动作
+function sendUserEventQuit(userModule) {
+    sendUserEvent('QUIT', userModule);
 }

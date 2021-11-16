@@ -3,20 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.wang.webmonitor;
+package org.wang.webmonitor.event;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.wang.webmonitor.TKMapper;
 
 /**
  *
  * @author wanggang
  */
-public enum EventType {
-    ENTER_PAGE,
-    CHANGE_PAGE,
-    FOCUSIN_PAGE,
-    LEAVE_PAGE,
-    
-    CLICK,
-    DOUBLE_CLICK,
-    DRILL,
-    QUIR,
+@Mapper
+public interface EventMapper extends TKMapper<EventPO> {
+
 }

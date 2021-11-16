@@ -2,10 +2,41 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="1" author="wg">
-        <createTable tableName="test">
+        <createTable tableName="t_event">
             <column name="id" autoIncrement="true" type="bigint">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
+            <column name="create_time" type="timestamp"/>
+            <column name="update_time" type="timestamp"/>  
+            <column name="guid" type="varchar(68)"/>
+            <column name="type" type="varchar(20)"/>
+            <column name="url" type="varchar(1024)"/>
+            <column name="module" type="varchar(64)"/>
+            <column name="time" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="2" author="wg">
+        <createTable tableName="t_visit">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="create_time" type="timestamp"/>
+            <column name="update_time" type="timestamp"/>  
+            <column name="guid" type="varchar(68)"/>
+            <column name="time" type="timestamp"/>
+            <column name="redirect" type="bigint"/>
+            <column name="white_screen" type="bigint"/>
+            <column name="dom" type="bigint"/>
+            <column name="load" type="bigint"/>
+            <column name="unload" type="bigint"/>
+            <column name="request" type="bigint"/>
+            <column name="user_name" type="varchar(64)"/>
+            <column name="width" type="bigint"/>
+            <column name="height" type="bigint"/>
+            <column name="browser" type="varchar(16)"/>
+            <column name="os" type="varchar(16)"/>
+            <column name="language" type="varchar(16)"/>
         </createTable>
     </changeSet>
     
