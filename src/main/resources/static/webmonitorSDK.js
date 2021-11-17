@@ -295,7 +295,7 @@ function sendUserEvent(userType, userModule) {
 }
 
 // 发送进入模块动作
-function sendUserEventClick(userModule) {
+function sendUserEventEnter(userModule) {
     sendUserEvent('ENTER_MODULE', userModule);
 }
 // 发送下钻动作
