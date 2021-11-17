@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.wang.webmonitor.error.ErrorMapper;
+import org.wang.webmonitor.error.ErrorPO;
 import org.wang.webmonitor.visit.Visit;
 import org.wang.webmonitor.visit.VisitMapper;
 import org.wang.webmonitor.visit.VisitPO;
@@ -30,6 +32,8 @@ public class CollectService {
     private EventMapper eventMapper;
     @Autowired
     private VisitMapper visitMapper;
+    @Autowired
+    private ErrorMapper errorMapper;
 
     public void insertEvent(EventPO epo) {
         eventMapper.insert(epo);
@@ -47,6 +51,11 @@ public class CollectService {
         VisitPO vpo = visit.toPO();
         visitMapper.insert(vpo);
         log.debug("insert success {} ", JSONUtil.toJsonStr(vpo));
+    }
+
+    public void insertError(ErrorPO epo) {
+        errorMapper.insert(epo);
+        log.debug("insert success {} ", JSONUtil.toJsonStr(epo));
     }
 
     private VisitPO getVisitByGuid(String guid) {

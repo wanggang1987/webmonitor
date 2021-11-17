@@ -41,4 +41,21 @@
         </createTable>
     </changeSet>
     
+    <changeSet id="3" author="wg">
+        <createTable tableName="t_error">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="create_time" type="timestamp"/>
+            <column name="update_time" type="timestamp"/>  
+            <column name="guid" type="varchar(68)"/>
+            <column name="time" type="timestamp"/>
+            <column name="type" type="varchar(16)"/>
+            <column name="row_num" type="bigint"/>
+            <column name="col_num" type="bigint"/>
+            <column name="msg" type="varchar(1024)"/>
+            <column name="url" type="varchar(1024)"/>
+        </createTable>
+    </changeSet>
+    
 </databaseChangeLog> 

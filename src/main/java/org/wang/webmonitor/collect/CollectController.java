@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.wang.webmonitor.error.ErrorPO;
 import org.wang.webmonitor.visit.Visit;
 
 /**
@@ -43,11 +44,13 @@ public class CollectController {
     @PostMapping("error")
     public void beanconError(@RequestBody String json) {
         log.debug("beanconError {}", json);
+        collectService.insertError(JSONUtil.toBean(json, ErrorPO.class));
     }
 
     @GetMapping("error")
     public void pxpointError(@RequestBody String json) {
         log.debug("pxpointError {}", json);
+        collectService.insertError(JSONUtil.toBean(json, ErrorPO.class));
     }
 
     @PostMapping("event")

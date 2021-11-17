@@ -218,8 +218,8 @@ window.onerror = function (msg, url, row, col, error) {
         // 全局ID
         guid: monitorId,
         type: 'javascript', // 错误类型
-        row: row, // 发生错误时的代码行数
-        col: col, // 发生错误时的代码列数
+        rowNum: row, // 发生错误时的代码行数
+        colNum: col, // 发生错误时的代码列数
         msg: error && error.stack ? error.stack : msg, // 错误信息
         url: url, // 错误文件
         time: new Date().getTime(), // 错误发生的时间
