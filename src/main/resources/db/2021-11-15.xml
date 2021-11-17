@@ -58,4 +58,10 @@
         </createTable>
     </changeSet>
     
+    
+    <changeSet id="4" author="wg">
+        <addColumn tableName="t_visit">
+            <column name="url" type="varchar(1024)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog> 

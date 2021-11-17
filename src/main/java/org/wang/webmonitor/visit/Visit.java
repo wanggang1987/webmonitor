@@ -23,6 +23,7 @@ public class Visit {
     private Performance performance;
     private User user;
     private Long duration;
+    private String url;
 
     public Visit() {
 

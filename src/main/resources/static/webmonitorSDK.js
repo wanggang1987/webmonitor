@@ -152,6 +152,8 @@ function monitorInit() {
         guid: monitorId,
         // 用户时间戳
         time: currentTime,
+        // 入口页面路径
+        url: window.location.href,
         // 性能信息
         performance: getPerformanceInfo(),
         // 用户信息
