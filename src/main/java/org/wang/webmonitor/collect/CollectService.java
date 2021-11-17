@@ -10,7 +10,6 @@ import org.wang.webmonitor.event.EventPO;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.wang.webmonitor.error.ErrorMapper;
 import org.wang.webmonitor.error.ErrorPO;

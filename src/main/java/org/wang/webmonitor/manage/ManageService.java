@@ -8,9 +8,12 @@ package org.wang.webmonitor.manage;
 import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import java.util.Comparator;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import org.wang.webmonitor.event.EventMapper;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +78,38 @@ public class ManageService {
                 .build());
         log.debug("select {} EventPO", epos.size());
         return new PageInfo<>(epos);
+    }
+
+    public Map<String, Long> selectModules(String guid) {
+        List<EventPO> epos = eventMapper.selectByExample(Example.builder(EventPO.class)
+                .where(Sqls.custom()
+                        .andEqualTo("guid", guid))
+                .orderByDesc("id")
+                .build());
+
+        Map<String, List<Timestamp>> map = new HashMap<>();
+        epos.forEach(epo -> {
+            String key = epo.getModule() != null ? epo.getModule() : epo.getUrl();
+            if (!map.containsKey(key)) {
+                map.put(key, new ArrayList<>());
+            }
+            List<Timestamp> list = map.get(key);
+            list.add(epo.getTime());
+        });
+
+        Map<String, Long> ret = new HashMap<>();
+        map.keySet().forEach(key -> {
+            List<Timestamp> list = map.get(key);
+            if (list.size() >= 2) {
+                Long t1 = list.get(0).getTime();
+                Long t2 = list.get(list.size() - 1).getTime();
+                ret.put(key, t1 - t2);
+            } else {
+                ret.put(key, 0L);
+            }
+        });
+
+        return ret;
     }
 
     public PageInfo<ErrorPO> selectErrorsByGuid(String guid) {

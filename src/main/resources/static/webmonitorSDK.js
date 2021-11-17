@@ -292,19 +292,15 @@ function sendUserEvent(userType, userModule) {
     sendInfo2Server('/event', userEvent);
 }
 
-// 发送点击动作
+// 发送进入模块动作
 function sendUserEventClick(userModule) {
-    sendUserEvent('CLICK', userModule);
+    sendUserEvent('ENTER_MODULE', userModule);
 }
 // 发送下钻动作
 function sendUserEventDrill(userModule) {
-    sendUserEvent('DRILL', userModule);
+    sendUserEvent('DRILL_MODULE', userModule);
 }
-// 发送双击动作
-function sendUserEventDoubleClick(userModule) {
-    sendUserEvent('DOUBLE_CLICK', userModule);
-}
-// 发送退出动作
+// 发送退出模块动作
 function sendUserEventQuit(userModule) {
-    sendUserEvent('QUIT', userModule);
+    sendUserEvent('QUIT_MODULE', userModule);
 }
