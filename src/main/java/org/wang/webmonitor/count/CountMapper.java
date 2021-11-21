@@ -21,6 +21,6 @@ public interface CountMapper extends TKMapper<CountPO> {
             + "VALUES (#{tag}, #{date}, #{duration}, #{times}) "
             + "ON DUPLICATE KEY UPDATE duration = #{duration}, times = #{times}")
     public void updateCount(
-            @Param("tag") String tag, @Param("date") String date, @Param("duration") Long duration, @Param("times") Long times);
+            @Param("tag") String tag, @Param("date") String date, @Param("duration") Integer duration, @Param("times") Integer times);
 
 }

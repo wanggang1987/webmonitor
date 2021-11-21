@@ -17,8 +17,8 @@ import lombok.Data;
 public class User {
 
     private String userName;
-    private Long width;
-    private Long height;
+    private Integer width;
+    private Integer height;
     private String browser;
     private String os;
     private String language;

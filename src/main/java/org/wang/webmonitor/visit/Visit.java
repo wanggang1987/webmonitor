@@ -22,7 +22,6 @@ public class Visit {
     private Timestamp time;
     private Performance performance;
     private User user;
-    private Long duration;
     private String url;
 
     public Visit() {

@@ -16,11 +16,11 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Performance {
 
-    private Long redirect;
-    private Long whiteScreen;
-    private Long dom;
-    private Long load;
-    private Long unload;
-    private Long request;
-    private Long total;
+    private Integer redirect;
+    private Integer whiteScreen;
+    private Integer dom;
+    private Integer load;
+    private Integer unload;
+    private Integer request;
+    private Integer total;
 }

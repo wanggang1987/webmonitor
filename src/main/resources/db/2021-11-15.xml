@@ -106,5 +106,9 @@
             <column name="number" type="bigint"/>
         </addColumn>
     </changeSet>   
+    
+    <changeSet id="10" author="wg">
+        <dropColumn tableName="t_visit" columnName="duration"/>
+    </changeSet> 
         
 </databaseChangeLog> 

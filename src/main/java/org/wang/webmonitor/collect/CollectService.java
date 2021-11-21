@@ -36,13 +36,6 @@ public class CollectService {
 
     public void insertEvent(EventPO epo) {
         eventMapper.insert(epo);
-
-        VisitPO vpo = getVisitByGuid(epo.getGuid());
-        if (vpo != null) {
-            vpo.setDuration(epo.getTime().getTime() - vpo.getTime().getTime());
-            updateVisit(vpo);
-        }
-
         log.debug("insert success {} ", JSONUtil.toJsonStr(epo));
     }
 
@@ -57,14 +50,4 @@ public class CollectService {
         log.debug("insert success {} ", JSONUtil.toJsonStr(epo));
     }
 
-    private VisitPO getVisitByGuid(String guid) {
-        return visitMapper.selectOneByExample(Example.builder(VisitPO.class)
-                .where(Sqls.custom()
-                        .andEqualTo("guid", guid))
-                .build());
-    }
-
-    private void updateVisit(VisitPO visitPO) {
-        visitMapper.updateByPrimaryKey(visitPO);
-    }
 }

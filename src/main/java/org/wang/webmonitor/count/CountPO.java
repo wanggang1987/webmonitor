@@ -25,5 +25,5 @@ public class CountPO extends BasicPO {
 
     private String tag;
     private String date;
-    private Long number;
+    private Integer number;
 }

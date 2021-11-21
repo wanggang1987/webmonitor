@@ -23,8 +23,8 @@ public class ErrorPO extends BasicPO {
     private String guid;
     private Timestamp time;
     private String type;
-    private Long rowNum;
-    private Long colNum;
+    private Integer rowNum;
+    private Integer colNum;
     private String msg;
     private String url;
 }

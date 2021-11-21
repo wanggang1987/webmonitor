@@ -23,18 +23,17 @@ public class VisitPO extends BasicPO {
     private String guid;
     private Timestamp time;
     private String url;
-    private Long redirect;
-    private Long whiteScreen;
-    private Long dom;
-    private Long load;
-    private Long unload;
-    private Long request;
-    private Long total;
+    private Integer redirect;
+    private Integer whiteScreen;
+    private Integer dom;
+    private Integer load;
+    private Integer unload;
+    private Integer request;
+    private Integer total;
     private String userName;
-    private Long width;
-    private Long height;
+    private Integer width;
+    private Integer height;
     private String browser;
     private String os;
     private String language;
-    private Long duration;
 }
