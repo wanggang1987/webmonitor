@@ -64,4 +64,47 @@
             <column name="url" type="varchar(1024)"/>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="5" author="wg">
+        <addColumn tableName="t_visit">
+            <column name="total" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="6" author="wg">
+        <createTable tableName="t_count"> 
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="create_time" type="timestamp"/>
+            <column name="update_time" type="timestamp"/>  
+            <column name="tag" type="varchar(64)"/>
+            <column name="date" type="varchar(10)"/>
+            <column name="duration" type="bigint"/>
+            <column name="times" type="bigint"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="7" author="wg">
+        <createIndex tableName="t_count" indexName="idx_tag_date" unique="true">
+            <column name="tag" type="varchar(64)"/>
+            <column name="date" type="varchar(10)"/>        
+        </createIndex>
+    </changeSet>
+        
+    <changeSet id="8" author="wg">
+        <dropColumn tableName="t_count" columnName="duration"/>
+        <dropColumn tableName="t_count" columnName="times"/>
+        <addColumn tableName="t_visit">
+            <column name="number" type="bigint"/>
+        </addColumn>
+    </changeSet>    
+    
+    <changeSet id="9" author="wg">
+        <dropColumn tableName="t_visit" columnName="number"/>
+        <addColumn tableName="t_count">
+            <column name="number" type="bigint"/>
+        </addColumn>
+    </changeSet>   
+        
 </databaseChangeLog> 

@@ -129,16 +129,16 @@ function getPerformanceInfo() {
     const performance = {
         // 重定向耗时
         redirect: timing.redirectEnd - timing.redirectStart,
-        // 白屏时间
-        //whiteScreen: nil,
         // DOM 渲染耗时
         dom: timing.domComplete - timing.domLoading,
         // 页面加载耗时
-        load: timing.loadEventEnd - timing.navigationStart,
+        load: timing.loadEventEnd - timing.loadEventStart,
         // 页面卸载耗时
         unload: timing.unloadEventEnd - timing.unloadEventStart,
         // 请求耗时
         request: timing.responseEnd - timing.requestStart,
+        // 总时间
+        total: timing.loadEventStart - timing.fetchStart,
     }
 
     return performance;

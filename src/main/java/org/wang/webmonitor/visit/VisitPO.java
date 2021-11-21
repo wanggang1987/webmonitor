@@ -29,6 +29,7 @@ public class VisitPO extends BasicPO {
     private Long load;
     private Long unload;
     private Long request;
+    private Long total;
     private String userName;
     private Long width;
     private Long height;

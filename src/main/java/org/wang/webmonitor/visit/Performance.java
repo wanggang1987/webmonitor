@@ -22,4 +22,5 @@ public class Performance {
     private Long load;
     private Long unload;
     private Long request;
+    private Long total;
 }
