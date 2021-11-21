@@ -73,13 +73,13 @@ public class ManageController {
         count.getDuration().add(new CountPO("pageViewDuration", "2021-11-15", 500000L));
 
         count.setTimes(new ArrayList<>());
-        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-20", 123L));
+        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-21", 123L));
         count.getTimes().add(new CountPO("pageViewTimes", "2021-11-20", 200L));
-        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-20", 300L));
-        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-20", 210L));
-        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-20", 100L));
-        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-20", 300L));
-        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-20", 200L));
+        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-19", 300L));
+        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-18", 210L));
+        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-17", 100L));
+        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-16", 300L));
+        count.getTimes().add(new CountPO("pageViewTimes", "2021-11-15", 200L));
         return count;
     }
     
