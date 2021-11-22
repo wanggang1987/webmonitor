@@ -114,7 +114,6 @@
     <changeSet id="12" author="wg">
         <sql>
             insert into t_count (tag, date, number) values ('pageViewDuration','2021-11-21', 8000000);
-            insert into t_count (tag, date, number) values ('pageViewTimes','2021-11-21', 2);
             insert into t_count (tag, date, number) values ('pageViewDuration','2021-11-20', 15000000);
             insert into t_count (tag, date, number) values ('pageViewTimes','2021-11-20', 6);
         </sql>
