@@ -14,7 +14,7 @@ spring:
             path: /h2-console
             settings:
                 trace: false
-                web-allow-others: false
+                web-allow-others: true
     liquibase:
         change-log: classpath:db/master.xml
     jackson:

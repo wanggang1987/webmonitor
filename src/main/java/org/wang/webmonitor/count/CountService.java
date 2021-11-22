@@ -5,19 +5,16 @@
  */
 package org.wang.webmonitor.count;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.wang.webmonitor.FuncUtils;
 import org.wang.webmonitor.error.ErrorMapper;
 import org.wang.webmonitor.error.ErrorPO;
 import org.wang.webmonitor.event.EventMapper;
@@ -36,11 +33,6 @@ import tk.mybatis.mapper.util.Sqls;
 @Service
 public class CountService {
 
-    private String performance = "performance";
-    private String pageViewDuration = "pageViewDuration";
-    private String pageViewTimes = "pageViewTimes";
-    private String error = "error";
-
     @Autowired
     private CountMapper countMapper;
     @Autowired
@@ -50,40 +42,10 @@ public class CountService {
     @Autowired
     private ErrorMapper errorMapper;
 
-    private String todayString() {
-        Calendar today = Calendar.getInstance();
-        TimeZone zone = TimeZone.getTimeZone("GMT+8:00");
-        today.setTimeZone(zone);
-        Date currentTime = today.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(currentTime);
-    }
-
-    private static Date getStartTime() {
-        Calendar today = Calendar.getInstance();
-        TimeZone zone = TimeZone.getTimeZone("GMT+8:00");
-        today.setTimeZone(zone);
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-        return today.getTime();
-    }
-
-    private static Date getEndTime() {
-        Calendar today = Calendar.getInstance();
-        TimeZone zone = TimeZone.getTimeZone("GMT+8:00");
-        today.setTimeZone(zone);
-        today.set(Calendar.HOUR_OF_DAY, 23);
-        today.set(Calendar.MINUTE, 59);
-        today.set(Calendar.SECOND, 59);
-        today.set(Calendar.MILLISECOND, 999);
-        return today.getTime();
-    }
-
     @Scheduled(fixedRate = 1000 * 60)
     private void count() {
-        log.debug("start to count todayString:{} getStartTime:{} getEndTime:{}", todayString(), getStartTime(), getEndTime());
+        log.debug("start to count todayString:{} getStartTime:{} getEndTime:{}",
+                FuncUtils.todayString(), FuncUtils.todayStartTime(), FuncUtils.todayEndTime());
         countPerformance();
         countPageDuration();
         countPageViewtimes();
@@ -95,12 +57,12 @@ public class CountService {
         CountPO cpo = countMapper.selectOneByExample(Example.builder(CountPO.class)
                 .where(Sqls.custom()
                         .andEqualTo("tag", tag)
-                        .andEqualTo("date", todayString()))
+                        .andEqualTo("date", FuncUtils.todayString()))
                 .build());
         if (cpo == null) {
             CountPO newOne = new CountPO();
             newOne.setTag(tag);
-            newOne.setDate(todayString());
+            newOne.setDate(FuncUtils.todayString());
             newOne.setNumber(n);
             countMapper.insert(newOne);
         } else {
@@ -114,13 +76,13 @@ public class CountService {
         List<VisitPO> vpos = visitMapper.selectByExample(Example.builder(VisitPO.class)
                 .select("total")
                 .where(Sqls.custom()
-                        .andBetween("time", getStartTime(), getEndTime()))
+                        .andBetween("time", FuncUtils.todayStartTime(), FuncUtils.todayEndTime()))
                 .orderByDesc("id")
                 .build());
         log.debug("find {} vpos", vpos.size());
         Double avg = vpos.stream().map(v -> v.getTotal()).filter(t -> (t != null && t >= 0))
-                .mapToInt(Integer::intValue).average().orElse(0);
-        insertCount(performance, avg.intValue());
+                .mapToInt(Long::intValue).average().orElse(0);
+        insertCount(countTag.performance.toString(), avg.intValue());
     }
 
     private void addMap(Map<String, Integer> mapDuration, Map<String, Integer> mapTimes, String module, Long time) {
@@ -139,7 +101,7 @@ public class CountService {
     private void countPageDuration() {
         List<EventPO> epos = eventMapper.selectByExample(Example.builder(EventPO.class)
                 .where(Sqls.custom()
-                        .andBetween("time", getStartTime(), getEndTime()))
+                        .andBetween("time", FuncUtils.todayStartTime(), FuncUtils.todayEndTime()))
                 .orderBy("id")
                 .build());
         log.debug("find {} epos", epos.size());
@@ -160,13 +122,13 @@ public class CountService {
                 }
                 stack.push(epo);
             });
-            String module = pageViewDuration;
+            String module = countTag.pageView.toString();
             Long time = gEpos.get(gEpos.size() - 1).getTime().getTime() - gEpos.get(0).getTime().getTime();
             addMap(mapDuration, mapTimes, module, time);
         });
 
-        mapDuration.keySet().forEach(module -> insertCount(module + "Duration", mapDuration.get(module)));
-        mapTimes.keySet().forEach(module -> insertCount(module + "Times", mapTimes.get(module)));
+        mapDuration.keySet().forEach(module -> insertCount(module + countTag.Duration.toString(), mapDuration.get(module)));
+        mapTimes.keySet().forEach(module -> insertCount(module + countTag.Times.toString(), mapTimes.get(module)));
     }
 
     private void countPageViewtimes() {
@@ -174,26 +136,26 @@ public class CountService {
                 .select("id")
                 .where(Sqls.custom()
                         .andEqualTo("type", EventType.ENTER_PAGE)
-                        .andBetween("time", getStartTime(), getEndTime()))
+                        .andBetween("time", FuncUtils.todayStartTime(), FuncUtils.todayEndTime()))
                 .build());
         log.debug("find {} countPageViewtimes", count);
-        insertCount(pageViewTimes, count);
+        insertCount(countTag.pageViewTimes.toString(), count);
     }
 
     private void countError() {
         Integer count = errorMapper.selectCountByExample(Example.builder(ErrorPO.class)
                 .select("id")
                 .where(Sqls.custom()
-                        .andBetween("time", getStartTime(), getEndTime()))
+                        .andBetween("time", FuncUtils.todayStartTime(), FuncUtils.todayEndTime()))
                 .build());
         log.debug("find {} countError", count);
-        insertCount(error, count);
+        insertCount(countTag.error.toString(), count);
     }
 
     public List<CountPO> getTodayCount() {
         List<CountPO> cpos = countMapper.selectByExample(Example.builder(CountPO.class)
                 .where(Sqls.custom()
-                        .andEqualTo("date", todayString()))
+                        .andEqualTo("date", FuncUtils.todayString()))
                 .build());
         log.debug("find {} today cpos", cpos.size());
         return cpos;
