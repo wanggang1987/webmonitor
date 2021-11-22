@@ -128,5 +128,11 @@
             insert into t_count (tag, date, number) values ('pageViewTimes','2021-11-18', 6);
         </sql>
     </changeSet> 
+    
+    <changeSet id="14" author="wg">
+        <sql>
+            UPDATE t_count SET number = 10 WHERE tag = 'error' and date = '2021-11-21';
+        </sql>
+    </changeSet> 
         
 </databaseChangeLog> 
