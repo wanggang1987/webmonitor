@@ -17,11 +17,12 @@ and open the template in the editor.
     <body>
         <div>TODO write content</div>
 
-        <button class="btn1">错误测试按钮1</button>
+        <button class="btn1">错误测试按钮</button>
         <script>
             document.querySelector('.btn1').onclick = () => {
                 setTimeout(() => {
-                    console.log('create error');
+                    console.log(monitor);
+                    alert("统计了这次错误");
                 }, 0)
             }
         </script>
