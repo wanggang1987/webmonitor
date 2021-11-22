@@ -54,31 +54,31 @@ public class FuncUtils {
             list.add(formatter.format(currentTime));
         }
         {
-            day.add(Calendar.DATE, -2);
+            day.add(Calendar.DATE, -1);
             Date currentTime = day.getTime();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             list.add(formatter.format(currentTime));
         }
         {
-            day.add(Calendar.DATE, -3);
+            day.add(Calendar.DATE, -1);
             Date currentTime = day.getTime();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             list.add(formatter.format(currentTime));
         }
         {
-            day.add(Calendar.DATE, -4);
+            day.add(Calendar.DATE, -1);
             Date currentTime = day.getTime();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             list.add(formatter.format(currentTime));
         }
         {
-            day.add(Calendar.DATE, -5);
+            day.add(Calendar.DATE, -1);
             Date currentTime = day.getTime();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             list.add(formatter.format(currentTime));
         }
         {
-            day.add(Calendar.DATE, -6);
+            day.add(Calendar.DATE, -1);
             Date currentTime = day.getTime();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             list.add(formatter.format(currentTime));
