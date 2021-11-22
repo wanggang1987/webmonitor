@@ -14,7 +14,6 @@ public enum EventType {
     CHANGE_PAGE,
     FOCUSIN_PAGE,
     LEAVE_PAGE,
-    
     ENTER_MODULE,
     DRILL_MODULE,
     QUIT_MODULE,

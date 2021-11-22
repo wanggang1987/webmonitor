@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 public class CountModules {
-    
+
     List<CountPO> duration;
     List<CountPO> times;
 }

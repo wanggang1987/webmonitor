@@ -16,8 +16,6 @@ import org.wang.webmonitor.error.ErrorPO;
 import org.wang.webmonitor.visit.Visit;
 import org.wang.webmonitor.visit.VisitMapper;
 import org.wang.webmonitor.visit.VisitPO;
-import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.util.Sqls;
 
 /**
  *

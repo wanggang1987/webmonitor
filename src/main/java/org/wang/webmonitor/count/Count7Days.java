@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 public class Count7Days {
-    
+
     List<CountPO> duration;
     List<CountPO> times;
 }
